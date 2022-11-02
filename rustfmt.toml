@@ -1,0 +1,6 @@
+max_width = 160
+
+trailing_comma = "Never"
+
+# report_fixme = "Unnumbered"
+# report_todo = "Unnumbered"
