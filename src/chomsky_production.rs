@@ -20,3 +20,18 @@ impl ChomskyProduction {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::model::test_helpers::*;
+
+    use super::*;
+
+    #[test]
+    fn test_chomsky_production_produces() {
+        assert!(ChomskyProduction::Terminal('a').produces_terminal(&'a'));
+        assert!(ChomskyProduction::Terminal('a').produces_terminal(&'a'));
+
+        assert!(!ChomskyProduction::Sequence(VAR_A, VAR_B).produces_terminal(&'a'));
+    }
+}

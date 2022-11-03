@@ -96,14 +96,6 @@ mod tests {
     }
 
     #[test]
-    fn test_chomsky_production_produces() {
-        assert!(ChomskyProduction::Terminal('a').produces_terminal(&'a'));
-        assert!(ChomskyProduction::Terminal('a').produces_terminal(&'a'));
-
-        assert!(!ChomskyProduction::Sequence(VAR_A, VAR_B).produces_terminal(&'a'));
-    }
-
-    #[test]
     fn test_build_table() {
         let grammar = example_grammar();
 
