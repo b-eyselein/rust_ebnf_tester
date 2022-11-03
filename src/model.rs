@@ -1,54 +1,43 @@
 use std::fmt::Formatter;
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum EbnfElement {
-    Terminal(char),
-    Variable(char),
-    Optional(Box<EbnfElement>),
-    RepetitionZero(Box<EbnfElement>),
-    RepetitionOne(Box<EbnfElement>),
-    Alternative(Vec<EbnfElement>),
-    Sequence(Vec<EbnfElement>),
+#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+pub struct Terminal(pub char);
+
+impl std::fmt::Display for Terminal {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "'{}'", self.0)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+pub struct Variable(pub char);
+
+impl std::fmt::Display for Variable {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
 }
 
 #[cfg(test)]
-impl EbnfElement {
-    pub fn optional(sub_element: EbnfElement) -> Self {
-        Self::Optional(Box::new(sub_element))
-    }
+#[allow(dead_code)]
+pub mod test_helpers {
+    use crate::model::*;
 
-    pub fn repetition_zero(sub_element: EbnfElement) -> Self {
-        Self::RepetitionZero(Box::new(sub_element))
-    }
+    pub const TER_0: Terminal = Terminal('0');
+    pub const TER_1: Terminal = Terminal('1');
 
-    pub fn repetition_one(sub_element: EbnfElement) -> Self {
-        Self::RepetitionOne(Box::new(sub_element))
-    }
-}
-
-impl std::fmt::Display for EbnfElement {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self {
-            EbnfElement::Terminal(terminal) => write!(f, "'{terminal}'"),
-            EbnfElement::Variable(variable) => write!(f, "{variable}"),
-            EbnfElement::Optional(sub_element) => write!(f, "{sub_element}?"),
-            EbnfElement::RepetitionZero(sub_element) => write!(f, "{sub_element}*"),
-            EbnfElement::RepetitionOne(sub_element) => write!(f, "{sub_element}+"),
-            EbnfElement::Alternative(alternatives) => write!(f, "{}", alternatives.iter().map(|el| el.to_string()).collect::<Vec<_>>().join(" | ")),
-            EbnfElement::Sequence(sub_elements) => write!(f, "{}", sub_elements.iter().map(|el| el.to_string()).collect::<Vec<_>>().join(" ")),
-        }
-    }
+    pub const VAR_A: Variable = Variable('A');
+    pub const VAR_B: Variable = Variable('B');
+    pub const VAR_C: Variable = Variable('C');
+    pub const VAR_D: Variable = Variable('D');
+    pub const VAR_E: Variable = Variable('E');
+    pub const VAR_F: Variable = Variable('F');
 }
 
 #[cfg(test)]
 mod tests {
+    use super::test_helpers::*;
     use super::*;
-
-    const TER_1: EbnfElement = EbnfElement::Terminal('1');
-
-    const VAR_A: EbnfElement = EbnfElement::Variable('A');
-    const VAR_B: EbnfElement = EbnfElement::Variable('B');
-    const VAR_C: EbnfElement = EbnfElement::Variable('C');
 
     #[test]
     fn test_terminal() {
@@ -58,38 +47,5 @@ mod tests {
     #[test]
     fn test_variable() {
         assert_eq!(VAR_A.to_string(), "A");
-    }
-
-    #[test]
-    fn test_rep_zero() {
-        assert_eq!(EbnfElement::repetition_zero(VAR_A).to_string(), "A*");
-    }
-
-    #[test]
-    fn test_rep_one() {
-        assert_eq!(EbnfElement::repetition_one(VAR_A).to_string(), "A+");
-    }
-
-    #[test]
-    fn test_option() {
-        assert_eq!(EbnfElement::optional(VAR_A).to_string(), "A?");
-    }
-
-    #[test]
-    fn test_alternative() {
-        assert_eq!(EbnfElement::Alternative(vec![VAR_A, VAR_B]).to_string(), "A | B");
-
-        assert_eq!(EbnfElement::Alternative(vec![VAR_A, VAR_B, VAR_C]).to_string(), "A | B | C");
-
-        assert_eq!(EbnfElement::Alternative(vec![VAR_A, TER_1, VAR_C]).to_string(), "A | '1' | C");
-    }
-
-    #[test]
-    fn test_sequence() {
-        assert_eq!(EbnfElement::Sequence(vec![VAR_A, VAR_B]).to_string(), "A B");
-
-        assert_eq!(EbnfElement::Sequence(vec![VAR_A, VAR_B, VAR_C]).to_string(), "A B C");
-
-        assert_eq!(EbnfElement::Sequence(vec![VAR_A, TER_1, VAR_C]).to_string(), "A '1' C");
     }
 }
