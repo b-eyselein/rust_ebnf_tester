@@ -92,9 +92,7 @@ mod tests {
     }
 
     fn chomsky_row<'a>(cells: &'a [&'a [char]]) -> Row<'a> {
-        let x = cells.iter().map(|cell| HashSet::from_iter(cell.iter())).collect::<Vec<_>>();
-
-        x
+        cells.iter().map(|cell| HashSet::from_iter(cell.iter())).collect::<Vec<_>>()
     }
 
     #[test]
