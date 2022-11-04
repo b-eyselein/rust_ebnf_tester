@@ -2,6 +2,7 @@ use crate::model::{Terminal, Variable};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum BackusNaurProduction {
+    Epsilon,
     Terminal(Terminal),
     Variable(Variable),
     Optional(Box<BackusNaurProduction>),

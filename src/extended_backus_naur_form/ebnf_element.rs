@@ -4,6 +4,7 @@ use crate::model::{Terminal, Variable};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ExtendedBackusNaurProduction {
+    Epsilon,
     Terminal(Terminal),
     Variable(Variable),
     Optional(Box<ExtendedBackusNaurProduction>),
@@ -39,6 +40,7 @@ impl ExtendedBackusNaurProduction {
 impl std::fmt::Display for ExtendedBackusNaurProduction {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match &self {
+            ExtendedBackusNaurProduction::Epsilon => write!(f, "eps"),
             ExtendedBackusNaurProduction::Terminal(terminal) => write!(f, "{terminal}"),
             ExtendedBackusNaurProduction::Variable(variable) => write!(f, "{variable}"),
             ExtendedBackusNaurProduction::Optional(sub_element) => write!(f, "{sub_element}?"),
