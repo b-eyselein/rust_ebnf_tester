@@ -1,6 +1,6 @@
 use std::fmt::Formatter;
 
-#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Terminal(pub char);
 
 impl std::fmt::Display for Terminal {
@@ -9,7 +9,7 @@ impl std::fmt::Display for Terminal {
     }
 }
 
-#[derive(Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Variable(pub char);
 
 impl std::fmt::Display for Variable {
@@ -37,7 +37,6 @@ pub mod test_helpers {
 #[cfg(test)]
 mod tests {
     use super::test_helpers::*;
-    use super::*;
 
     #[test]
     fn test_terminal() {

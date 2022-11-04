@@ -3,7 +3,6 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 
 use crate::chomsky_production::ChomskyProduction;
-use crate::model::Variable;
 
 type Cell<'a> = HashSet<&'a char>;
 type Row<'a> = Vec<Cell<'a>>;
@@ -68,7 +67,7 @@ impl ChomskyGrammar {
 
 #[cfg(test)]
 mod tests {
-    use crate::model::test_helpers::*;
+    use crate::model::Variable;
 
     use super::*;
 
